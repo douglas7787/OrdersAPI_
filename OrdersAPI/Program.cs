@@ -18,9 +18,16 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=orders.db"));
 
+// Memory Cache
+builder.Services.AddMemoryCache();
+
 // Dependency Injection
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IOrderService, OrderService>();
+
+// Services
+builder.Services.AddScoped<OrderService>();                    
+builder.Services.AddScoped<IOrderService, CachedOrderService>(); 
+
 
 // FluentValidation
 builder.Services.AddScoped<IValidator<CreateOrderDto>, CreateOrderValidator>();
